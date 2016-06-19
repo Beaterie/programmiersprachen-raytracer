@@ -5,9 +5,9 @@ Shape::Shape():
 	name_{"New_Shape"}
 	{}
 
-Shape::Shape(Color const& color_, std::string const& name_):
-	color_{color_},
-	name_{name_}
+Shape::Shape(Color const& color, std::string const& name):
+	color_{color},
+	name_{name}
 	{}
 
 Shape::Shape(Shape const& s):
@@ -24,6 +24,18 @@ float Shape::stay_positiv(float a) const{
 	}
 }
 
+std::ostream& Shape::print(std::ostream& os) const{
+	os <<
+	"Name: " <<
+	name_ << 
+	"\nColor: (" <<
+	color_.r << ", " <<
+	color_.g << ", " <<
+	color_.b << ")" <<
+	std::endl;
+	return os;
+}
+
 std::string Shape::get_name() const{
 	return name_;
 }
@@ -31,3 +43,9 @@ std::string Shape::get_name() const{
 Color const& Shape::get_color() const{
 	return color_;
 }
+
+std::ostream& operator<<(std::ostream& os, Shape const& s){
+	return s.print(os);
+};
+
+

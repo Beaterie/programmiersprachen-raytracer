@@ -88,6 +88,21 @@ TEST_CASE("Test of Box", "[Box]"){
 	REQUIRE(c.get_name() == "Box of Lies");
 }
 
+TEST_CASE("Shape: print method", "[aufgabe5.5]") {
+	Sphere s1{{0.4f, 2.3f, 1.2f}, 4.3f, {0.1f, 0.2f, 0.3f}, "Charlie Shapeling"};
+	std::cout << s1 << std::endl;
+
+	Sphere s2{{6.9f, 4.2f, -1.2f}, -6.9f, {0.9f, 0.35f, 0.2f}, "Kügelchen"};
+	std::cout << s2 << std::endl;
+
+	Box b1{};
+	std::cout << b1 << std::endl;
+
+	auto b_pointer = std::make_shared<Box>(Box{{-1.0f, -4.3f, 5.6f}, {-9.0f, 1.5f, -2.2f}, {1.0f, 0.3f, 0.5f}, "Ein Schach-tel vom Kuchen."});
+	b_pointer -> print(std::cout);
+	std::cout << std::endl;
+}
+
 
 
 int main(int argc, char *argv[])

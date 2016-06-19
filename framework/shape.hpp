@@ -1,14 +1,18 @@
 #ifndef SHAPE_HPP
 #define SHAPE_HPP
-#include <iostream>
-#include <string>
 #include "color.hpp"
+#include <glm/glm.hpp>
+#include <glm/vec3.hpp>
+#include <glm/gtx/intersect.hpp>
+#include <cmath>
+#include <string>
+#include <iostream>
 
 
 class Shape{
 public:
 	Shape();
-	Shape(Color const& color_, std::string const& name_);
+	Shape(Color const& color, std::string const& name);
 	Shape(Shape const& s);
 	/*~Shape();*/
 
@@ -17,6 +21,7 @@ public:
 	float stay_positiv(float a) const;
 	std::string get_name() const;
 	Color const& get_color() const;
+	virtual std::ostream& print(std::ostream& os) const;
 
 protected:
 	Color color_;
@@ -25,4 +30,7 @@ protected:
 private:
 
 };
+
+std::ostream& operator<<(std::ostream& os, Shape const& s);
+
 #endif
