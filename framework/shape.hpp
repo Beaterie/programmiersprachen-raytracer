@@ -14,7 +14,7 @@ public:
 	Shape();
 	Shape(Color const& color, std::string const& name);
 	Shape(Shape const& s);
-	/*~Shape();*/
+	virtual ~Shape();
 
 	virtual float area() const = 0;
 	virtual float volume() const = 0;

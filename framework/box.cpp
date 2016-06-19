@@ -18,6 +18,10 @@ Box::Box(Box const& b):
 	Shape{b.color_, b.name_}
 	{}
 
+Box::~Box() {
+    std::cout << "Box Destructor: " << name_ << std::endl;
+}
+
 glm::vec3 const& Box::get_min() const {
 	return min_;
 }

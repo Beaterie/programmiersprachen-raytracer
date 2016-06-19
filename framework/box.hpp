@@ -12,7 +12,7 @@ public:
 	Box();
 	Box(glm::vec3 const& min, glm::vec3 const& max, Color const& color, std::string const& name);
 	Box(Box const& b);
-	/*~Box();*/
+	~Box();
 
 	glm::vec3 const& get_min() const;
 	glm::vec3 const& get_max() const;

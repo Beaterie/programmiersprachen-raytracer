@@ -18,6 +18,10 @@ Sphere::Sphere(Sphere const& s):
 	Shape{s.color_, s.name_}
 	{}
 
+Sphere::~Sphere() {
+    std::cout << "Sphere Destructor: " << name_ << std::endl;
+}
+
 glm::vec3 const& Sphere::get_center() const {
 	return ctr_;
 }
@@ -46,4 +50,7 @@ std::ostream& Sphere::print(std::ostream& os) const{
 	return os;
 }
 
+bool Sphere::intersect(Ray const& ry, float distance) const {
+    return glm::intersectRaySphere(ry.origin, ry.direction, ctr_, r_ * r_, distance);
+}
 

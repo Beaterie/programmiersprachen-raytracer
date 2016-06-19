@@ -3,6 +3,10 @@
 #include "shape.hpp"
 #include "sphere.hpp"
 #include "box.hpp"
+#include <glm/glm.hpp>
+#include <glm/gtx/intersect.hpp>
+#include "ray.hpp"
+#include "color.hpp"
 
 TEST_CASE("Test of Sphere", "[Sphere]"){
 	Sphere a{};
@@ -88,7 +92,7 @@ TEST_CASE("Test of Box", "[Box]"){
 	REQUIRE(c.get_name() == "Box of Lies");
 }
 
-TEST_CASE("Shape: print method", "[aufgabe5.5]") {
+TEST_CASE("Shape: print method", "[Aufgabe 5.5]") {
 	Sphere s1{{0.4f, 2.3f, 1.2f}, 4.3f, {0.1f, 0.2f, 0.3f}, "Charlie Shapeling"};
 	std::cout << s1 << std::endl;
 
@@ -101,6 +105,57 @@ TEST_CASE("Shape: print method", "[aufgabe5.5]") {
 	auto b_pointer = std::make_shared<Box>(Box{{-1.0f, -4.3f, 5.6f}, {-9.0f, 1.5f, -2.2f}, {1.0f, 0.3f, 0.5f}, "Ein Schach-tel vom Kuchen."});
 	b_pointer -> print(std::cout);
 	std::cout << std::endl;
+}
+
+TEST_CASE("intersectRaySphere", "[intersect]"){
+	// Ray
+	glm::vec3 ray_origin{0.0,0.0,0.0};
+	// ray direction has to be normalized !
+	// you can use:
+	// v = glm::normalize(some_vector)
+	glm::vec3 ray_direction{0.0,0.0,1.0};
+	// Sphere
+	glm::vec3 sphere_center{0.0,0.0,5.0};
+	float sphere_radius {1.0};
+	float distance {0.0};
+	bool result = glm::intersectRaySphere(
+	ray_origin, ray_direction, sphere_center,
+	sphere_radius*sphere_radius, distance);
+	REQUIRE(distance == Approx(4.0f));
+}
+
+TEST_CASE("Destructor: virtual vs. non-virtual", "[aufgabe5.8]") {
+	Color red(255, 0, 0); 
+	glm::vec3 position(0, 0, 0);
+
+	Sphere* s1 = new Sphere(position, 1.2, red, "Sphere 1");
+	Shape* s2 = new Sphere(position, 1.2, red, "Sphere 2");
+
+	std::cout << std::endl;
+	s1 -> print(std::cout); 
+	std::cout << std::endl;
+	s2 -> print(std::cout);
+	std::cout << std::endl;
+
+	delete s1; 
+	delete s2;
+
+	/*
+	virtual: ruft erst den Unterklassen-Destruktor (Sphere),
+	dann den Basisklasse (Shape) für beide Beispiele
+    non-virtual:
+    Sphere 1: ruft zuerst den Destruktor der Klasse Sphere,
+    dann den der Klasse (Shape)
+    Sphere 2: Ruft nur den Destruktor der Klasse Shape 
+    => kommt zu Resource Leak, bei dem die erworbenen Ressourcen
+    nicht mehr vom Programm freigegeben werden
+    Ist der Destruktor nicht als virtual deklariert kommt es zu
+    "undefinied behaviour", was zu bugs fuehren kann. 
+    Virtual Destructors sind immer dann nuetzlich, wenn eine Klasse
+    polymorph verwendet wird (bzw. mindestens eine 
+    virtuelle Funktion vorhanden ist)
+    http://stackoverflow.com/questions/461203/when-to-use-virtual-destructors
+    */
 }
 
 

@@ -15,6 +15,10 @@ Shape::Shape(Shape const& s):
 	name_{s.name_}
 	{}
 
+Shape::~Shape() {
+    std::cout << "Shape Destructor: " << name_ << std::endl;
+}
+
 float Shape::stay_positiv(float a) const{
 	if (a < 0){
 		return a*(-1.0f);
