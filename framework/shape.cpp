@@ -1,17 +1,17 @@
 #include "shape.hpp"
 
 Shape::Shape():
-	color_{0.0f,0.0f,0.0f},
+	material_{},
 	name_{"New_Shape"}
 	{}
 
-Shape::Shape(Color const& color, std::string const& name):
-	color_{color},
+Shape::Shape(Material const& material, std::string const& name):
+	material_{material},
 	name_{name}
 	{}
 
 Shape::Shape(Shape const& s):
-	color_{s.color_},
+	material_{s.material_},
 	name_{s.name_}
 	{}
 
@@ -32,20 +32,18 @@ std::ostream& Shape::print(std::ostream& os) const{
 	os <<
 	"Name: " <<
 	name_ << 
-	"\nColor: (" <<
-	color_.r << ", " <<
-	color_.g << ", " <<
-	color_.b << ")" <<
+	"\n" <<
+	material_ <<
 	std::endl;
 	return os;
 }
 
-std::string Shape::get_name() const{
+std::string const& Shape::get_name() const{
 	return name_;
 }
 
-Color const& Shape::get_color() const{
-	return color_;
+Material const& Shape::get_material() const{
+	return material_;
 }
 
 std::ostream& operator<<(std::ostream& os, Shape const& s){

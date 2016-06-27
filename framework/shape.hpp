@@ -7,24 +7,25 @@
 #include <cmath>
 #include <string>
 #include <iostream>
+#include "material.hpp"
 
 
 class Shape{
 public:
 	Shape();
-	Shape(Color const& color, std::string const& name);
+	Shape(Material const& material, std::string const& name);
 	Shape(Shape const& s);
 	virtual ~Shape();
 
 	virtual float area() const = 0;
 	virtual float volume() const = 0;
 	float stay_positiv(float a) const;
-	std::string get_name() const;
-	Color const& get_color() const;
+	std::string const& get_name() const;
+	Material const& get_material() const;
 	virtual std::ostream& print(std::ostream& os) const;
 
 protected:
-	Color color_;
+	Material material_;
 	std::string name_;
 
 private:

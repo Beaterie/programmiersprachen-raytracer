@@ -1,21 +1,21 @@
 #include "box.hpp"
 
 Box::Box():
+	Shape{{}, "New_Box"}, //ganz oben hin
 	min_{0.0f,0.0f,0.0f},
-	max_{0.0f,0.0f,0.0f},
-	Shape{{0.0f,0.0f,0.0f}, "New_Box"}
+	max_{0.0f,0.0f,0.0f}
 	{}
 
-Box::Box(glm::vec3 const& min, glm::vec3 const& max, Color const& color, std::string const& name):
+Box::Box(glm::vec3 const& min, glm::vec3 const& max, Material const& material, std::string const& name):
+	Shape{material, name},
 	min_{min},
-	max_{max},
-	Shape{color, name}
+	max_{max}
 	{}
 
 Box::Box(Box const& b):
+	Shape{b.material_, b.name_},
 	min_{b.min_},
-	max_{b.max_},
-	Shape{b.color_, b.name_}
+	max_{b.max_}
 	{}
 
 Box::~Box() {
@@ -59,4 +59,37 @@ std::ostream& Box::print(std::ostream& os) const{
 	std::endl;
 	return os;
 }
+
+bool Box::intersect(Ray const& ry, float distance) const{
+	// Probe ob Punkt im Quader liegt
+    if ((ry.get_origin().x <= min_.x &&
+    	ry.get_origin().x >= max_.x) ||
+    	(ry.get_origin().x >= min_.x &&
+    	ry.get_origin().x <= max_.x))
+    {
+    	if ((ry.get_origin().y <= min_.y &&
+    		ry.get_origin().y >= max_.y) ||
+    		(ry.get_origin().y >= min_.y &&
+    		ry.get_origin().y <= max_.y))
+    	{
+    		if ((ry.get_origin().z <= min_.z &&
+    			ry.get_origin().z >= max_.z) ||
+    			(ry.get_origin().z >= min_.z &&
+    			ry.get_origin().z <= max_.z))
+    		{
+    			return true;
+    		}
+    		else{
+    			return false;
+    		}
+    	}
+    	else{
+    		return false;
+    	}
+    }
+    else{
+    	return false;
+    }
+}
+
 

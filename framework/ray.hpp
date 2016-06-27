@@ -16,7 +16,9 @@ struct Ray
 		direction{glm::normalize(d)}
 		{}
 
-	bool intersect(Ray const& ry, float distance) const;
+	glm::vec3 const& get_origin() const{
+		return origin;
+	}
 
 	glm::vec3 origin;
 	glm::vec3 direction;

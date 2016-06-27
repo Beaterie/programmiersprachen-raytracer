@@ -1,21 +1,21 @@
 #include "sphere.hpp"
 
 Sphere::Sphere():
+	Shape{{}, "New_Sphere"},
 	ctr_{0.0f,0.0f,0.0f},
-	r_{0.0f},
-	Shape{{0.0f,0.0f,0.0f}, "New_Sphere"}
+	r_{0.0f}
 	{}
 
-Sphere::Sphere(glm::vec3 const& ctr, float r, Color const& color, std::string const& name):
+Sphere::Sphere(glm::vec3 const& ctr, float r, Material const& material, std::string const& name):
+	Shape{material, name},
 	ctr_{ctr},
-	r_{r},
-	Shape{color, name}
+	r_{r}
 	{}
 
 Sphere::Sphere(Sphere const& s):
+	Shape{s.material_, s.name_},
 	ctr_{s.ctr_},
-	r_{s.r_},
-	Shape{s.color_, s.name_}
+	r_{s.r_}
 	{}
 
 Sphere::~Sphere() {
@@ -46,7 +46,8 @@ std::ostream& Sphere::print(std::ostream& os) const{
 	ctr_.y << ", " <<
 	ctr_.z <<
 	")\nRadius: " <<
-	r_ << std::endl;
+	r_ <<
+	std::endl;
 	return os;
 }
 
