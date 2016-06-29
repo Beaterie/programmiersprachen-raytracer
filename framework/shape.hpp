@@ -8,6 +8,7 @@
 #include <string>
 #include <iostream>
 #include "material.hpp"
+#include "ray.hpp"
 
 
 class Shape{
@@ -23,6 +24,7 @@ public:
 	std::string const& get_name() const;
 	Material const& get_material() const;
 	virtual std::ostream& print(std::ostream& os) const;
+	virtual bool intersect(Ray const& ray, float& t) = 0;
 
 protected:
 	Material material_;

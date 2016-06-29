@@ -7,7 +7,6 @@
 #include <glm/gtx/intersect.hpp>
 #include "ray.hpp"
 #include "color.hpp"
-#include <fstream>
 
 TEST_CASE("Test of Sphere", "[Sphere]"){
 	Sphere a{};
@@ -207,21 +206,24 @@ TEST_CASE("Destructor: virtual vs. non-virtual", "[aufgabe5.8]") {
     ~~ Commentary written by Jana, used by Josef ~
     */
 }
-/*
+
 TEST_CASE("intersectRayBox", "[intersect2]"){
 	// Ray
-	Ray ronald{{0.5f,1.0f,2.0f}, {0.0f,0.0f,1.0f}};
-	Ray donald{{0.5f,1.2f,-5.0f}, {0.0f,1.0f,0.0f}};
+	Ray ronald{{0.5f,0.0f,1.0f}, {0.0f,1.0f,0.0f}};
+	Ray donald{{0.5f,4.0f,2.5f}, {0.0f,-1.0f,0.0f}};
 	// Box
-	Box b{{0.0f,0.0f,0.0f},{1.0f,2.0f,3.0f},{0.4f,0.5f,0.6f},"Bixi-Box"};
+	Box b{{0.0f,1.0f,0.0f},{1.0f,2.0f,3.0f},{"Plüsch", {0.22f,0.33f,0.44f}, {0.55f,0.66f,0.77f}, {0.88f,0.99f,0.11f}, 3.45f},"Bixi-Box"};
 	float distance {0.0f};
 	REQUIRE(b.intersect(ronald, distance) == true);
-	REQUIRE(b.intersect(donald, distance) == false);
-}*/
-
-TEST_CASE("b"){
-
+	REQUIRE(distance == 1);
+	std::cout << std::endl;
+	REQUIRE(b.intersect(donald, distance) == true);
+	REQUIRE(distance == 2);
 }
+/*
+TEST_CASE("b"){
+	std::string
+}*/
 
 
 
