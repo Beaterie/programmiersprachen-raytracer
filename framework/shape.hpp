@@ -20,11 +20,10 @@ public:
 
 	virtual float area() const = 0;
 	virtual float volume() const = 0;
-	float stay_positiv(float a) const;
 	std::string const& get_name() const;
 	Material const& get_material() const;
 	virtual std::ostream& print(std::ostream& os) const;
-	virtual bool intersect(Ray const& ray, float& t) = 0;
+	virtual bool intersect(Ray const& ray, float& t) const = 0;
 
 protected:
 	Material material_;
@@ -34,6 +33,7 @@ private:
 
 };
 
+float stay_positiv(float a);
 std::ostream& operator<<(std::ostream& os, Shape const& s);
 
 #endif

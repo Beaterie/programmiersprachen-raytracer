@@ -6,6 +6,19 @@ Box::Box():
 	max_{0.0f,0.0f,0.0f}
 	{}
 
+Box::Box(glm::vec3 const& min, glm::vec3 const& max):
+	Shape{{}, "New_Box"},
+	min_{min},
+	max_{max}
+	{
+		min_.x = std::min(min.x,max.x);
+		min_.y = std::min(min.y,max.y);
+		min_.z = std::min(min.z,max.z);
+		max_.x = std::max(min.x,max.x);
+		max_.y = std::max(min.y,max.y);
+		max_.z = std::max(min.z,max.z);
+	}
+
 Box::Box(glm::vec3 const& min, glm::vec3 const& max, Material const& material, std::string const& name):
 	Shape{material, name},
 	min_{min},
@@ -67,13 +80,11 @@ std::ostream& Box::print(std::ostream& os) const{
 	return os;
 }
 
-bool Box::intersect(Ray const& ray, float& t) {
+bool Box::intersect(Ray const& ray, float& t) const{
+	bool result = true;
 	int z_1{0};
 	int z_2{0};
 	int z_3{0};
-	float s_1{0};
-	float s_2{0};
-	float s_3{0};
 
 	//Ebenen parallel zur y,z-Ebene
 	if (ray.get_direction().x != 0){
@@ -89,30 +100,12 @@ bool Box::intersect(Ray const& ray, float& t) {
 		schnittpunkt_2.x = ray.get_origin().x + v_2*ray.get_direction().x;
 		schnittpunkt_2.y = ray.get_origin().y + v_2*ray.get_direction().y;
 		schnittpunkt_2.z = ray.get_origin().z + v_2*ray.get_direction().z;
-		//Tests ob Schnittpunkte in der Box
-		//beide in Box
-		if (is_in_box(min_, max_, schnittpunkt_1) ==
-			is_in_box(min_, max_, schnittpunkt_2) == true)
+		//Test ob einer der Schnittpunkte in der Box ist
+		if (in_box(schnittpunkt_1) == true ||
+			in_box(schnittpunkt_2) == true)
 		{
-			s_1 = std::min( distance_two_vecs(schnittpunkt_1,ray.get_origin()),
-			distance_two_vecs(schnittpunkt_2,ray.get_origin()) );
 			z_1 = 1;
 		}
-		//nur schnittpunkt_1 in box
-		if (is_in_box(min_, max_, schnittpunkt_1) == true &&
-			is_in_box(min_, max_, schnittpunkt_2) == false)
-		{
-			s_1 = distance_two_vecs(schnittpunkt_1,ray.get_origin());
-			z_1 = 1;
-		}
-		//nur schnittpunkt_2 in box
-		if (is_in_box(min_, max_, schnittpunkt_1) == false &&
-			is_in_box(min_, max_, schnittpunkt_2) == true)
-		{
-			s_1 = distance_two_vecs(schnittpunkt_2,ray.get_origin());
-			z_1 = 1;
-		}
-		//std::cout << "Erstens: distance = " << s_1 << " und " << z_1 << std::endl;
 	}
 	//Ebenen parallel zur x,z-Ebene
 	if (ray.get_direction().y != 0){
@@ -128,30 +121,12 @@ bool Box::intersect(Ray const& ray, float& t) {
 		schnittpunkt_2.x = ray.get_origin().x + v_2*ray.get_direction().x;
 		schnittpunkt_2.y = ray.get_origin().y + v_2*ray.get_direction().y;
 		schnittpunkt_2.z = ray.get_origin().z + v_2*ray.get_direction().z;
-		//Tests ob Schnittpunkte in der Box
-		//beide in Box
-		if (is_in_box(min_, max_, schnittpunkt_1) ==
-			is_in_box(min_, max_, schnittpunkt_2) == true)
+		//Test ob einer der Schnittpunkte in der Box ist
+		if (in_box(schnittpunkt_1) == true ||
+			in_box(schnittpunkt_2) == true)
 		{
-			s_2 = std::min( distance_two_vecs(schnittpunkt_1,ray.get_origin()),
-			distance_two_vecs(schnittpunkt_2,ray.get_origin()) );
 			z_2 = 1;
 		}
-		//nur schnittpunkt_1 in box
-		if (is_in_box(min_, max_, schnittpunkt_1) == true &&
-			is_in_box(min_, max_, schnittpunkt_2) == false)
-		{
-			s_2 = distance_two_vecs(schnittpunkt_1,ray.get_origin());
-			z_2 = 1;
-		}
-		//nur schnittpunkt_2 in box
-		if (is_in_box(min_, max_, schnittpunkt_1) == false &&
-			is_in_box(min_, max_, schnittpunkt_2) == true)
-		{
-			s_2 = distance_two_vecs(schnittpunkt_2,ray.get_origin());
-			z_2 = 1;
-		}
-		//std::cout << "Zweitens: distance = " << s_2 << " und " << z_2 << std::endl;
 	}
 	//Ebenen parallel zur x,y-Ebene
 	if (ray.get_direction().z != 0){
@@ -167,95 +142,41 @@ bool Box::intersect(Ray const& ray, float& t) {
 		schnittpunkt_2.x = ray.get_origin().x + v_2*ray.get_direction().x;
 		schnittpunkt_2.y = ray.get_origin().y + v_2*ray.get_direction().y;
 		schnittpunkt_2.z = ray.get_origin().z + v_2*ray.get_direction().z;
-		//Tests ob Schnittpunkte in der Box
-		//beide in Box
-		if (is_in_box(min_, max_, schnittpunkt_1) ==
-			is_in_box(min_, max_, schnittpunkt_2) == true)
+		//Test ob einer der Schnittpunkte in der Box ist
+		if (in_box(schnittpunkt_1) == true ||
+			in_box(schnittpunkt_2) == true)
 		{
-			s_3 = std::min( distance_two_vecs(schnittpunkt_1,ray.get_origin()),
-			distance_two_vecs(schnittpunkt_2,ray.get_origin()) );
 			z_3 = 1;
 		}
-		//nur schnittpunkt_1 in box
-		if (is_in_box(min_, max_, schnittpunkt_1) == true &&
-			is_in_box(min_, max_, schnittpunkt_2) == false)
-		{
-			s_3 = distance_two_vecs(schnittpunkt_1,ray.get_origin());
-			z_3 = 1;
-		}
-		//nur schnittpunkt_2 in box
-		if (is_in_box(min_, max_, schnittpunkt_1) == false &&
-			is_in_box(min_, max_, schnittpunkt_2) == true)
-		{
-			s_3 = distance_two_vecs(schnittpunkt_2,ray.get_origin());
-			z_3 = 1;
-		}
-		//std::cout << "Drittens: distance = " << s_3 << " und " << z_3 << std::endl;
 	}
+	t = 0; //Distanz ist 0, da Schnittpunkt
 
-	//drei Schnittpunkte
-	if (z_1 == 1 && z_2 == 1 && z_3 == 1){
-		//std::cout << "Davor1: " << t << std::endl;
-		t = std::min(std::min(s_1,s_2),s_3);
-		//std::cout << "Danach: " << t << std::endl;
-		return true;
-	}
-	//zwei Schnittpunkte
-	if (z_1 == 1 && z_2 == 1 && z_3 == 0){
-		//std::cout << "Davor2: " << t << std::endl;
-		t = std::min(s_1,s_2);
-		//std::cout << "Danach: " << t << std::endl;
-		return true;
-	}
-	if (z_1 == 1 && z_3 == 1 && z_2 == 0){
-		//std::cout << "Davor3: " << t << std::endl;
-		t = std::min(s_1,s_3);
-		//std::cout << "Danach: " << t << std::endl;
-		return true;
-	}
-	if (z_2 == 1 && z_3 == 1 && z_1 == 0){
-		//std::cout << "Davor4: " << t << std::endl;
-		t = std::min(s_2,s_3);
-		//std::cout << "Danach: " << t << std::endl;
-		return true;
-	}
-	//ein Schnittpunkt
-	if (z_1 == 0 && z_2 == 0 && z_3 == 1){
-		//std::cout << "Davor5: " << t << std::endl;
-		t = s_3;
-		//std::cout << "Danach: " << t << std::endl;
-		return true;
-	}
-	if (z_1 == 0 && z_3 == 0 && z_2 == 1){
-		//std::cout << "Davor6: " << t << std::endl;
-		t = s_2;
-		//std::cout << "Danach: " << t << std::endl;
-		return true;
-	}
-	if (z_2 == 0 && z_3 == 0 && z_1 == 1){
-		//std::cout << "Davor7: " << t << std::endl;
-		t = s_1;
-		//std::cout << "Danach: " << t << std::endl;
-		return true;
-	}
 	//kein Schnittpunkt
 	if (z_1 == 0 && z_2 == 0 && z_3 == 0){
-		return false;
+		result = false;
+		//Distanz muss noch berechnet werden!!!
 	}
 
+	return result;
 }
 
-bool is_in_box(glm::vec3 const& min, glm::vec3 const& max, glm::vec3 const& test) {
-	if (test.x >= min.x && test.x <= max.x){
-    	if (test.y >= min.y && test.y <= max.y){
-    		if (test.z >= min.z && test.z <= max.z){
-    			return true;
+// member function: checks whether a given point is in a box or not
+bool Box::in_box(glm::vec3 const& test) const{
+	bool result = false;
+	if (test.x >= min_.x && test.x <= max_.x){
+    	if (test.y >= min_.y && test.y <= max_.y){
+    		if (test.z >= min_.z && test.z <= max_.z){
+    			result = true;
     		}
-    		else {return false;}
     	}
-    	else {return false;}
     }
-    else {return false;}
+   	return result;
+}
+
+// free function: checks whether a given point is in a box or not 
+bool in_box(glm::vec3 const& min, glm::vec3 const& max, glm::vec3 const& point) {
+	Box b {min, max};
+    return b.in_box(point);
 }
 
 float distance_two_vecs(glm::vec3 const& p1, glm::vec3 const& p2){

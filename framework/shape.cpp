@@ -19,15 +19,6 @@ Shape::~Shape() {
     std::cout << "Shape Destructor: " << name_ << std::endl;
 }
 
-float Shape::stay_positiv(float a) const{
-	if (a < 0){
-		return a*(-1.0f);
-	}
-	else{
-		return a;
-	}
-}
-
 std::ostream& Shape::print(std::ostream& os) const{
 	os <<
 	"Name: " <<
@@ -49,5 +40,14 @@ Material const& Shape::get_material() const{
 std::ostream& operator<<(std::ostream& os, Shape const& s){
 	return s.print(os);
 };
+
+float stay_positiv(float a){
+	if (a < 0){
+		return a*(-1.0f);
+	}
+	else{
+		return a;
+	}
+}
 
 

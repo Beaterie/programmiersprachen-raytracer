@@ -13,6 +13,7 @@
 class Box : public Shape{
 public:
 	Box();
+	Box(glm::vec3 const& min, glm::vec3 const& max);
 	Box(glm::vec3 const& min, glm::vec3 const& max, Material const& material, std::string const& name);
 	Box(Box const& b);
 	~Box();
@@ -22,7 +23,8 @@ public:
 	float area() const override;
 	float volume() const override;
 	std::ostream& print(std::ostream& os) const override;
-	bool intersect(Ray const& ray, float& t) override;
+	bool intersect(Ray const& ray, float& t) const override;
+	bool in_box(glm::vec3 const& point) const;
 
 private:
 	glm::vec3 min_;
@@ -30,7 +32,7 @@ private:
 
 };
 
-bool is_in_box(glm::vec3 const& min, glm::vec3 const& max, glm::vec3 const& test);
+bool in_box(glm::vec3 const& min, glm::vec3 const& max, glm::vec3 const& point);
 float distance_two_vecs(glm::vec3 const& p1, glm::vec3 const& p2);
 
 #endif

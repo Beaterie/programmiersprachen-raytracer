@@ -211,14 +211,22 @@ TEST_CASE("intersectRayBox", "[intersect2]"){
 	// Ray
 	Ray ronald{{0.5f,0.0f,1.0f}, {0.0f,1.0f,0.0f}};
 	Ray donald{{0.5f,4.0f,2.5f}, {0.0f,-1.0f,0.0f}};
+	Ray tonald{{0.0f,0.5f,0.0f}, {0.0f,1.0f,0.0f}};
+	Ray zonald{{0.5f,0.0f,0.0f}, {0.0f,1.0f,3.0f}};
+	Ray nonald{{0.5f,0.0f,0.0f}, {0.0f,1.0f,4.0f}};
 	// Box
 	Box b{{0.0f,1.0f,0.0f},{1.0f,2.0f,3.0f},{"Plüsch", {0.22f,0.33f,0.44f}, {0.55f,0.66f,0.77f}, {0.88f,0.99f,0.11f}, 3.45f},"Bixi-Box"};
 	float distance {0.0f};
 	REQUIRE(b.intersect(ronald, distance) == true);
-	REQUIRE(distance == 1);
-	std::cout << std::endl;
+	REQUIRE(distance == 0);
 	REQUIRE(b.intersect(donald, distance) == true);
-	REQUIRE(distance == 2);
+	REQUIRE(distance == 0);
+	REQUIRE(b.intersect(tonald, distance) == true);
+	REQUIRE(distance == 0);
+	REQUIRE(b.intersect(zonald, distance) == true);
+	REQUIRE(distance == 0);
+	REQUIRE(b.intersect(nonald, distance) == false);
+	REQUIRE(distance == 0);
 }
 /*
 TEST_CASE("b"){
