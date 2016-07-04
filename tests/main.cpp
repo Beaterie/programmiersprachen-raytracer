@@ -218,15 +218,19 @@ TEST_CASE("intersectRayBox", "[intersect2]"){
 	Box b{{0.0f,1.0f,0.0f},{1.0f,2.0f,3.0f},{"Plüsch", {0.22f,0.33f,0.44f}, {0.55f,0.66f,0.77f}, {0.88f,0.99f,0.11f}, 3.45f},"Bixi-Box"};
 	float distance {0.0f};
 	REQUIRE(b.intersect(ronald, distance) == true);
-	REQUIRE(distance == 0);
+	REQUIRE(distance == 1.0f);
+	distance = 0.0f;
 	REQUIRE(b.intersect(donald, distance) == true);
-	REQUIRE(distance == 0);
+	REQUIRE(distance == 2.0f);
+	distance = 0.0f;
 	REQUIRE(b.intersect(tonald, distance) == true);
-	REQUIRE(distance == 0);
+	REQUIRE(distance == 0.5f);
+	distance = 0.0f;
 	REQUIRE(b.intersect(zonald, distance) == true);
-	REQUIRE(distance == 0);
+	REQUIRE(distance == Approx(sqrt(10.0f)));
+	distance = 0.0f;
 	REQUIRE(b.intersect(nonald, distance) == false);
-	REQUIRE(distance == 0);
+	REQUIRE(distance == 0.0f);
 }
 /*
 TEST_CASE("b"){
